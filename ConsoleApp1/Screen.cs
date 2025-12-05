@@ -11,11 +11,11 @@ namespace Chess
                 {
                     if (board.piece(i, n) == null)
                     {
-                        Console.Write("-- ");
+                        Console.Write("- ");
                     }
                     else
                     {
-                        Console.WriteLine($"{board.piece(i, n)} ");
+                        Console.Write($"{board.piece(i, n)} ");
                     }
                 }
                 Console.WriteLine();

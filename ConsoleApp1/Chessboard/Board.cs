@@ -18,5 +18,11 @@ namespace Chessboard
             return Pieces[Line, Column];
         }
 
+        public void PutPiece(Piece p, Position pos)
+        {
+            Pieces[pos.Line, pos.Column] = p;
+            p.position = pos;
+        }
+
     }
 }

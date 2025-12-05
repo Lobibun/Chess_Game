@@ -1,9 +1,4 @@
-﻿using Chessboard;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿
 
 namespace Chessboard
 {
@@ -14,9 +9,9 @@ namespace Chessboard
         public int QttMovements { get; protected set; }
         public Board board { get; protected set; }
 
-        public Piece(Position position, Color color, Board board)
+        public Piece(Color color, Board board)
         {
-            this.position = position;
+            this.position = null;
             this.color = color;
             this.board = board;
             QttMovements = 0;
