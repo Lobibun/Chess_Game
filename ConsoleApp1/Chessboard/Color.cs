@@ -4,9 +4,16 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ConsoleApp1.Chessboard
+namespace Chessboard
 {
-    internal class Class1
+    enum Color
     {
+        White,
+        Black,
+        Yelow,
+        Orange,
+        Blue,
+        Red,
+        Green
     }
 }
