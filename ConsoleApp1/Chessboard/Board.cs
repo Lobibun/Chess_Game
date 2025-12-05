@@ -1,10 +1,4 @@
-﻿using ConsoleApp1.Chessboard;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
+﻿
 namespace Chessboard
 {
     internal class Board
@@ -19,5 +13,10 @@ namespace Chessboard
             Columns = columns;
             Pieces = new Piece[Lines, Columns];
         }
+        public Piece piece(int Line, int Column)
+        {
+            return Pieces[Line, Column];
+        }
+
     }
 }
