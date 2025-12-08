@@ -8,8 +8,8 @@ namespace Chessboard
 {
     enum Color
     {
-        White,
-        Black,
+        Branca,
+        Preta,
         Yelow,
         Orange,
         Blue,

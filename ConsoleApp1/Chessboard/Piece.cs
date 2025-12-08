@@ -21,6 +21,28 @@ namespace Chessboard
         {
             QttMovements++;
         }
+        public bool ThereArePosibleMovements()
+        {
+            bool[,] mat = PossibleMovements();
+            for (int i = 0; i < board.Lines; i++)
+            {
+                for (int n = 0; n < board.Columns; n++)
+                {
+                    if (mat[i, n])
+                    {
+                        return true;
+                    }
+
+
+                }
+            }
+            return false;
+        }
+        
+        public bool CanMoveTo(Position pos)
+        {
+            return PossibleMovements()[pos.Line, pos.Column];
+        }
 
         public abstract bool[,] PossibleMovements();
     }

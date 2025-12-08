@@ -67,7 +67,7 @@ namespace Chess
             else
             {
 
-                if (piece.color == Color.White)
+                if (piece.color == Color.Branca)
                 {
                     Console.Write(piece);
                 }

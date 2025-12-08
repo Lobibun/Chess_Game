@@ -12,25 +12,34 @@ class Program
 
             while (!match.finished)
             {
-                Console.Clear();
-                Screen.PrintBoard(match.board);
-                Console.Write("\nOrigem: ");
-                Position origen = Screen.ReadChessPosition().toPosition();
+                try
+                {
+                    Console.Clear();
+                    Screen.PrintBoard(match.board);
+                    Console.WriteLine($"\nTurno {match.Turn}");
+                    Console.WriteLine($"Aguardando jogada: {match.CurrentPlayer}");
 
-                bool[,] PosiblePosition = match.board.piece(origen).PossibleMovements();
 
-                Console.Clear();
-                Screen.PrintBoard(match.board, PosiblePosition);
+                    Console.Write("\nOrigem: ");
+                    Position origin = Screen.ReadChessPosition().toPosition();
+                    match.ValidadeOriginPosition(origin);
+                    bool[,] PosiblePosition = match.board.piece(origin).PossibleMovements();
 
-                Console.Write("\nDestino: ");
-                Position destiny = Screen.ReadChessPosition().toPosition();
+                    Console.Clear();
+                    Screen.PrintBoard(match.board, PosiblePosition);
 
-                match.PerformMovement(origen, destiny);
-            }
+                    Console.Write("\nDestino: ");
+                    Position destiny = Screen.ReadChessPosition().toPosition();
+                    match.ValidadeDestinyPosition(origin, destiny);
 
-            
-
-            Console.ReadLine();
+                    match.MakePlay(origin, destiny);
+                }
+                catch (BoardException e)
+                {
+                    Console.WriteLine(e.Message);
+                    Console.ReadLine();
+                }
+            }    
 
         }
         catch (BoardException e)
