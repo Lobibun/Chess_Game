@@ -14,9 +14,15 @@ class Program
             {
                 Console.Clear();
                 Screen.PrintBoard(match.board);
-                Console.WriteLine("\nOrigem: ");
+                Console.Write("\nOrigem: ");
                 Position origen = Screen.ReadChessPosition().toPosition();
-                Console.WriteLine("Destino: ");
+
+                bool[,] PosiblePosition = match.board.piece(origen).PossibleMovements();
+
+                Console.Clear();
+                Screen.PrintBoard(match.board, PosiblePosition);
+
+                Console.Write("\nDestino: ");
                 Position destiny = Screen.ReadChessPosition().toPosition();
 
                 match.PerformMovement(origen, destiny);
