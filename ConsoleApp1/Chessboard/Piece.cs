@@ -16,5 +16,10 @@ namespace Chessboard
             this.board = board;
             QttMovements = 0;
         }
+
+        public void increaseQuantityOfMovement()
+        {
+            QttMovements++;
+        }
     }
 }

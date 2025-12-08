@@ -8,13 +8,21 @@ class Program
     {
         try
         {
-            Board board = new Board(8, 8);
-            board.PutPiece(new Tower(Color.Black, board), new Position(0, 0));
-            board.PutPiece(new Tower(Color.Black, board), new Position(1, 3));
-            board.PutPiece(new King(Color.Black, board), new Position(0, 4));
-            board.PutPiece(new King(Color.White, board), new Position(7, 4));
+           ChessMatch match = new ChessMatch();
 
-            Screen.PrintBoard(board);
+            while (!match.finished)
+            {
+                Console.Clear();
+                Screen.PrintBoard(match.board);
+                Console.WriteLine("\nOrigem: ");
+                Position origen = Screen.ReadChessPosition().toPosition();
+                Console.WriteLine("Destino: ");
+                Position destiny = Screen.ReadChessPosition().toPosition();
+
+                match.PerformMovement(origen, destiny);
+            }
+
+            
 
             Console.ReadLine();
 
