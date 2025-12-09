@@ -10,6 +10,10 @@ namespace Chess
             PrintCapturedPieces(match);
             Console.WriteLine($"\nTurno {match.Turn}");
             Console.WriteLine($"Aguardando jogada: {match.CurrentPlayer}");
+            if ( match.Check)
+            {
+                Console.WriteLine("Você está em Xeque!");
+            }
         }
         public static void PrintCapturedPieces(ChessMatch match)
         {

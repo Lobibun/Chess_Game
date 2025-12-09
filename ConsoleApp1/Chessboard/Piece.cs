@@ -21,6 +21,12 @@ namespace Chessboard
         {
             QttMovements++;
         }
+
+        public void DecrementQuantityOfMovement()
+        {
+            QttMovements--;
+        }
+
         public bool ThereArePosibleMovements()
         {
             bool[,] mat = PossibleMovements();
