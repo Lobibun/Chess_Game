@@ -37,7 +37,10 @@ class Program
                     Console.WriteLine(e.Message);
                     Console.ReadLine();
                 }
-            }    
+            }
+
+            Console.Clear();
+            Screen.PrintMatch(match);
 
         }
         catch (BoardException e)

@@ -9,10 +9,19 @@ namespace Chess
             Console.WriteLine();
             PrintCapturedPieces(match);
             Console.WriteLine($"\nTurno {match.Turn}");
-            Console.WriteLine($"Aguardando jogada: {match.CurrentPlayer}");
-            if ( match.Check)
+            
+            if (!match.finished)
             {
-                Console.WriteLine("Você está em Xeque!");
+                Console.WriteLine($"Aguardando jogada: {match.CurrentPlayer}");
+                if (match.Check)
+                {
+                    Console.WriteLine("Você está em Xeque!");
+                }
+            }
+            else
+            {
+                Console.WriteLine("Xequemate!");
+                Console.WriteLine($"Vencedor: {match.CurrentPlayer} ");
             }
         }
         public static void PrintCapturedPieces(ChessMatch match)
