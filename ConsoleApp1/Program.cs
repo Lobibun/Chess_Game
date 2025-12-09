@@ -15,9 +15,7 @@ class Program
                 try
                 {
                     Console.Clear();
-                    Screen.PrintBoard(match.board);
-                    Console.WriteLine($"\nTurno {match.Turn}");
-                    Console.WriteLine($"Aguardando jogada: {match.CurrentPlayer}");
+                   Screen.PrintMatch(match);
 
 
                     Console.Write("\nOrigem: ");
