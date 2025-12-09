@@ -1,11 +1,14 @@
-﻿using Chessboard;
+﻿using Chess_Console.Chess;
+using Chessboard;
 
-namespace Chess_Console.Chess
+namespace Chess
 {
     internal class King : Piece
     {
-        public King(Color color, Board board) : base(color, board)
+        private ChessMatch Match;
+        public King(Color color, Board board, ChessMatch match) : base(color, board)
         {
+            Match = match;
         }
 
         public override string ToString()
@@ -17,6 +20,12 @@ namespace Chess_Console.Chess
         {
             Piece p = board.piece(pos);
             return p == null || p.color != color;
+        }
+
+        private bool RookTestForTower(Position pos)
+        {
+            Piece p = board.piece(pos);
+            return p != null && p is Tower && p.color == color && p.QttMovements == 0;
         }
 
         public override bool[,] PossibleMovements()
@@ -71,6 +80,35 @@ namespace Chess_Console.Chess
             {
                 mat[pos.Line, pos.Column] = true;
             }
+
+            //#jogada especial roque 
+            if (QttMovements == 0 && !Match.Check)
+            {
+                //#jogada especial roque pequeno
+                Position T1Pos = new Position(position.Line, position.Column +3);
+                if (RookTestForTower(T1Pos))
+                {
+                    Position p1 = new Position(position.Line, position.Column + 1);
+                    Position p2 = new Position(position.Line, position.Column + 2);
+                    if (board.piece(p1)==null && board.piece(p2)==null)
+                    {
+                        mat[position.Line, position.Column +2] = true;
+                    }
+                }
+                //#jogada especial roque grande
+                Position T2Pos = new Position(position.Line, position.Column - 4);
+                if (RookTestForTower(T2Pos))
+                {
+                    Position p1 = new Position(position.Line, position.Column - 1);
+                    Position p2 = new Position(position.Line, position.Column - 2);
+                    Position p3 = new Position(position.Line, position.Column - 3);
+                    if (board.piece(p1) == null && board.piece(p2) == null && board.piece(p3) == null)
+                    {
+                        mat[position.Line, position.Column - 2] = true;
+                    }
+                }
+            }
+
 
             return mat;
 

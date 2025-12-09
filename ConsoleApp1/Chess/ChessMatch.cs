@@ -27,9 +27,9 @@ namespace Chess
             PutPieces();
         }
 
-        public Piece PerformMovement(Position origen, Position destiny)
+        public Piece PerformMovement(Position origin, Position destiny)
         {
-            Piece p = board.RemovePiece(origen);
+            Piece p = board.RemovePiece(origin);
             p.increaseQuantityOfMovement();
             
             Piece CapturedPice = board.RemovePiece(destiny);
@@ -38,6 +38,27 @@ namespace Chess
             {
                 captuded.Add(CapturedPice);
             }
+
+            //#jogada especial roque pequeno
+            if (p is King && destiny.Column == origin.Column +2)
+            {
+                Position TOrigin = new Position(origin.Line, origin.Column + 3);
+                Position TDestiny = new Position(origin.Line, origin.Column + 1);
+                Piece T = board.RemovePiece(TOrigin);
+                T.increaseQuantityOfMovement();
+                board.PutPiece(T, TDestiny);
+            }
+
+            //#jogada especial roque grande
+            if (p is King && destiny.Column == origin.Column - 2)
+            {
+                Position TOrigin = new Position(origin.Line, origin.Column - 4);
+                Position TDestiny = new Position(origin.Line, origin.Column - 1);
+                Piece T = board.RemovePiece(TOrigin);
+                T.increaseQuantityOfMovement();
+                board.PutPiece(T, TDestiny);
+            }
+
             return CapturedPice;
         }
 
@@ -79,6 +100,26 @@ namespace Chess
                 captuded.Remove(CapturedPiece);
             }
             board.PutPiece(p, origin);
+
+            //#jogada especial roque pequeno
+            if (p is King && destiny.Column == origin.Column + 2)
+            {
+                Position TOrigin = new Position(origin.Line, origin.Column + 3);
+                Position TDestiny = new Position(origin.Line, origin.Column + 1);
+                Piece T = board.RemovePiece(TDestiny);
+                T.DecrementQuantityOfMovement();
+                board.PutPiece(T, TOrigin);
+            }
+
+            //#jogada especial roque grande
+            if (p is King && destiny.Column == origin.Column - 2)
+            {
+                Position TOrigin = new Position(origin.Line, origin.Column - 4);
+                Position TDestiny = new Position(origin.Line, origin.Column - 1);
+                Piece T = board.RemovePiece(TDestiny);
+                T.DecrementQuantityOfMovement();
+                board.PutPiece(T, TOrigin);
+            }
         }
 
         public void ValidadeOriginPosition(Position pos)
@@ -226,12 +267,12 @@ namespace Chess
         {
             PutNewPiece('a', 1, new Tower(Color.Branca, board));
             PutNewPiece('h', 1, new Tower(Color.Branca, board));
-            PutNewPiece('e', 1, new King(Color.Branca, board));
-            PutNewPiece('c', 1, new Bishop(Color.Branca, board));
-            PutNewPiece('f', 1, new Bishop(Color.Branca, board));
-            PutNewPiece('b', 1, new Horse(Color.Branca, board));
-            PutNewPiece('g', 1, new Horse(Color.Branca, board));
-            PutNewPiece('d', 1, new Queen(Color.Branca, board));
+            PutNewPiece('e', 1, new King(Color.Branca, board, this));
+            //PutNewPiece('c', 1, new Bishop(Color.Branca, board));
+            //PutNewPiece('f', 1, new Bishop(Color.Branca, board));
+            //PutNewPiece('b', 1, new Horse(Color.Branca, board));
+            //PutNewPiece('g', 1, new Horse(Color.Branca, board));
+            //PutNewPiece('d', 1, new Queen(Color.Branca, board));
             PutNewPiece('a', 2, new Pawn(Color.Branca, board));
             PutNewPiece('b', 2, new Pawn(Color.Branca, board));
             PutNewPiece('c', 2, new Pawn(Color.Branca, board));
@@ -243,7 +284,7 @@ namespace Chess
 
             PutNewPiece('a', 8, new Tower(Color.Preta, board));
             PutNewPiece('h', 8, new Tower(Color.Preta, board));
-            PutNewPiece('e', 8, new King(Color.Preta, board));
+            PutNewPiece('e', 8, new King(Color.Preta, board, this));
             PutNewPiece('f', 8, new Bishop(Color.Preta, board));
             PutNewPiece('c', 8, new Bishop(Color.Preta, board));
             PutNewPiece('b', 8, new Horse(Color.Preta, board));
