@@ -5,11 +5,11 @@ namespace Chessboard
     abstract class Piece
     {
         public Position position {  get; set; }
-        public Color color { get; protected set; }
+        public PieceColor color { get; protected set; }
         public int QttMovements { get; protected set; }
         public Board board { get; protected set; }
 
-        public Piece(Color color, Board board)
+        public Piece(PieceColor color, Board board)
         {
             this.position = null;
             this.color = color;

@@ -6,7 +6,7 @@ namespace Chess
     {
         private ChessMatch Match;
 
-        public Pawn(Color color, Board board, ChessMatch match) : base(color, board)
+        public Pawn(PieceColor color, Board board, ChessMatch match) : base(color, board)
         {
             Match = match;
         }
@@ -32,7 +32,7 @@ namespace Chess
             bool[,] mat = new bool[board.Lines, board.Columns];
             Position pos = new Position(0, 0);
 
-            if (color == Color.Branca)
+            if (color == PieceColor.Branca)
             {
                 pos.SetValues(position.Line - 1, position.Column);
                 if (board.ValidPosition(pos) && Free(pos))

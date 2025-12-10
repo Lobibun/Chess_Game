@@ -31,6 +31,21 @@ class Program
                     match.ValidadeDestinyPosition(origin, destiny);
 
                     match.MakePlay(origin, destiny);
+
+                    if (match.PieceToPromote != null)
+                    {
+                        Console.Clear();
+                        Screen.PrintBoard(match.board);
+
+                        Console.Write("Promoção! Escolha a peça (B=Bispo, C=Cavalo, T=Torre, R=Rainha): ");
+                        string chosenPiece = Console.ReadLine().ToUpper();
+                        while (chosenPiece != "B" && chosenPiece != "C" && chosenPiece != "T"  && chosenPiece != "R")
+                        {
+                            Console.Write("Valor inválido! Digite novamente (B, C, T, R): ");
+                            chosenPiece = Console.ReadLine().ToUpper();
+                        }
+                            match.PromotePiece(chosenPiece);
+                    }
                 }
                 catch (BoardException e)
                 {
@@ -40,7 +55,7 @@ class Program
                 }
                 catch (Exception e)
                 {
-                    Console.WriteLine("\nERRO DE ENTRADA: O formato da posição digitada é inválido ou ocorreu um erro inesperado.");
+                    Console.WriteLine("\nERRO DE ENTRADA: O formato da posição digitada é inválido");
                     Console.WriteLine("Pressione ENTER para tentar novamente...");
                     Console.ReadLine();
                 }

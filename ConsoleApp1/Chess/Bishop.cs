@@ -9,7 +9,7 @@ namespace Chess_Console.Chess
 {
     internal class Bishop : Piece
     {
-        public Bishop(Color color, Board board) : base(color, board)
+        public Bishop(PieceColor color, Board board) : base(color, board)
         {
         }
 

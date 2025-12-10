@@ -1,6 +1,7 @@
 ﻿using Chess_Console.Chess;
 using Chessboard;
 using System;
+using System.Drawing;
 
 namespace Chess
 {
@@ -8,19 +9,20 @@ namespace Chess
     {
         public Board board {  get; private set; }
         public int Turn { get; private set; }
-        public Color CurrentPlayer { get; private set; }
+        public PieceColor CurrentPlayer { get; private set; }
         public bool finished { get; private set; }
         private HashSet<Piece> pieces;
         private HashSet<Piece> captured;
         public Piece VulnerableInPassant { get; private set; }
         public bool Check { get; private set; }
+        public Piece PieceToPromote { get; private set; }
 
 
         public ChessMatch()
         {
             board = new Board(8, 8);
             Turn = 1;
-            CurrentPlayer = Color.Branca;
+            CurrentPlayer = PieceColor.Branca;
             finished = false;
             Check = false;
             VulnerableInPassant = null;
@@ -67,7 +69,7 @@ namespace Chess
                 if (origin.Column != destiny.Column && CapturedPiece == null)
                 {
                     Position Pposition;
-                        if (p.color == Color.Branca)
+                        if (p.color == PieceColor.Branca)
                     {
                         Pposition = new Position(destiny.Line + 1, destiny.Column);
                     }
@@ -99,13 +101,10 @@ namespace Chess
 
             if (p is Pawn)
             {
-                if ((p.color == Color.Branca && destiny.Line == 0) || (p.color == Color.Preta && destiny.Line == 7))
+                if ((p.color == PieceColor.Branca && destiny.Line == 0) || (p.color == PieceColor.Preta && destiny.Line == 7))
                 {
-                    p = board.RemovePiece(destiny);
-                    pieces.Remove(p);
-                    Piece queen = new Queen(p.color, board);
-                    board.PutPiece(queen, destiny);
-                    pieces.Add(queen);
+                    PieceToPromote = p;
+                    return;
                 }
             }
 
@@ -137,6 +136,56 @@ namespace Chess
             else
             {
                 VulnerableInPassant = null;
+            }
+        }
+
+        public void PromotePiece(string pieceName)
+        {
+            Position pos = PieceToPromote.position;            
+            pieces.Remove(PieceToPromote);
+            Piece p = board.RemovePiece(pos);
+            PieceColor color = PieceToPromote.color;
+            Piece newPiece = null;
+
+            string chosenPiece = pieceName.ToUpper();
+            if (chosenPiece == "T")
+            {
+                newPiece = new Tower(color, board);
+            }
+            else if (chosenPiece == "B")
+            {
+                newPiece = new Bishop(color, board);
+            }
+            else if (chosenPiece == "C")
+            {
+                newPiece = new Horse(color, board);
+            }
+            else
+            {
+                newPiece = new Queen(color, board);
+            }
+
+            board.PutPiece(newPiece, pos);
+            pieces.Add(newPiece);
+            PieceToPromote = null;
+
+            if (ByCheck(Adversary(CurrentPlayer)))
+            {
+                Check = true;
+            }
+            else
+            {
+                Check = false;
+            }
+
+            if (TestCheckmate(Adversary(CurrentPlayer)))
+            {
+                finished = true;
+            }
+            else
+            {
+                Turn++;
+                ChangePlayer();
             }
         }
 
@@ -178,7 +227,7 @@ namespace Chess
                 {
                     Piece pawn = board.RemovePiece(destiny);
                     Position Pposition;
-                    if (p.color == Color.Branca)
+                    if (p.color == PieceColor.Branca)
                     {
                         Pposition = new Position(3, destiny.Column);
                     }
@@ -217,17 +266,17 @@ namespace Chess
         }
         private void ChangePlayer()
         {
-            if (CurrentPlayer == Color.Branca)
+            if (CurrentPlayer == PieceColor.Branca)
             {
-                CurrentPlayer = Color.Preta;
+                CurrentPlayer = PieceColor.Preta;
             }
             else
             {
-                CurrentPlayer = Color.Branca;
+                CurrentPlayer = PieceColor.Branca;
             }
         }
 
-        public HashSet<Piece> CapturedPieces(Color color)
+        public HashSet<Piece> CapturedPieces(PieceColor color)
         {
             HashSet<Piece> aux = new HashSet<Piece>();
             foreach (Piece x in captured)
@@ -240,7 +289,7 @@ namespace Chess
             return aux;
         }
 
-        public HashSet<Piece> piecesInGame(Color color)
+        public HashSet<Piece> piecesInGame(PieceColor color)
         {
             HashSet<Piece> aux = new HashSet<Piece>();
             foreach (Piece x in pieces)
@@ -253,19 +302,19 @@ namespace Chess
             aux.ExceptWith(CapturedPieces(color));
             return aux;
         }
-        private Color Adversary(Color color)
+        private PieceColor Adversary(PieceColor color)
         {
-            if (color == Color.Branca)
+            if (color == PieceColor.Branca)
             {
-                return Color.Preta;
+                return PieceColor.Preta;
             }
             else
             {
-                return Color.Branca;
+                return PieceColor.Branca;
             }
         }
 
-        private Piece King(Color color)
+        private Piece King(PieceColor color)
         {
             foreach (Piece x in piecesInGame(color))
             {
@@ -277,7 +326,7 @@ namespace Chess
             return null;
         }
 
-        public bool ByCheck(Color color)
+        public bool ByCheck(PieceColor color)
         {
             Piece K = King(color);
             if (K == null)
@@ -295,7 +344,7 @@ namespace Chess
             return false;
         }
 
-        public bool TestCheckmate(Color color)
+        public bool TestCheckmate(PieceColor color)
         {
             if (!ByCheck(color))
             {
@@ -334,39 +383,39 @@ namespace Chess
 
         private void PutPieces()
         {
-            PutNewPiece('a', 1, new Tower(Color.Branca, board));
-            PutNewPiece('h', 1, new Tower(Color.Branca, board));
-            PutNewPiece('e', 1, new King(Color.Branca, board, this));
-            PutNewPiece('c', 1, new Bishop(Color.Branca, board));
-            PutNewPiece('f', 1, new Bishop(Color.Branca, board));
-            PutNewPiece('b', 1, new Horse(Color.Branca, board));
-            PutNewPiece('g', 1, new Horse(Color.Branca, board));
-            PutNewPiece('d', 1, new Queen(Color.Branca, board));
-            PutNewPiece('a', 2, new Pawn(Color.Branca, board, this));
-            PutNewPiece('b', 2, new Pawn(Color.Branca, board, this));
-            PutNewPiece('c', 2, new Pawn(Color.Branca, board, this));
-            PutNewPiece('d', 2, new Pawn(Color.Branca, board, this));
-            PutNewPiece('e', 2, new Pawn(Color.Branca, board, this));
-            PutNewPiece('f', 2, new Pawn(Color.Branca, board, this));
-            PutNewPiece('g', 2, new Pawn(Color.Branca, board, this));
-            PutNewPiece('h', 2, new Pawn(Color.Branca, board, this));
+            PutNewPiece('a', 1, new Tower(PieceColor.Branca, board));
+            PutNewPiece('h', 1, new Tower(PieceColor.Branca, board));
+            PutNewPiece('e', 1, new King(PieceColor.Branca, board, this));
+            PutNewPiece('c', 1, new Bishop(PieceColor.Branca, board));
+            PutNewPiece('f', 1, new Bishop(PieceColor.Branca, board));
+            PutNewPiece('b', 1, new Horse(PieceColor.Branca, board));
+            PutNewPiece('g', 1, new Horse(PieceColor.Branca, board));
+            PutNewPiece('d', 1, new Queen(PieceColor.Branca, board));
+            PutNewPiece('a', 2, new Pawn(PieceColor.Branca, board, this));
+            PutNewPiece('b', 2, new Pawn(PieceColor.Branca, board, this));
+            PutNewPiece('c', 2, new Pawn(PieceColor.Branca, board, this));
+            PutNewPiece('d', 2, new Pawn(PieceColor.Branca, board, this));
+            PutNewPiece('e', 2, new Pawn(PieceColor.Branca, board, this));
+            PutNewPiece('f', 2, new Pawn(PieceColor.Branca, board, this));
+            PutNewPiece('g', 2, new Pawn(PieceColor.Branca, board, this));
+            PutNewPiece('h', 2, new Pawn(PieceColor.Branca, board, this));
 
-            PutNewPiece('a', 8, new Tower(Color.Preta, board));
-            PutNewPiece('h', 8, new Tower(Color.Preta, board));
-            PutNewPiece('e', 8, new King(Color.Preta, board, this));
-            PutNewPiece('f', 8, new Bishop(Color.Preta, board));
-            PutNewPiece('c', 8, new Bishop(Color.Preta, board));
-            PutNewPiece('b', 8, new Horse(Color.Preta, board));
-            PutNewPiece('g', 8, new Horse(Color.Preta, board));
-            PutNewPiece('d', 8, new Queen(Color.Preta, board));
-            PutNewPiece('a', 7, new Pawn(Color.Preta, board, this));
-            PutNewPiece('b', 7, new Pawn(Color.Preta, board, this));
-            PutNewPiece('c', 7, new Pawn(Color.Preta, board, this));
-            PutNewPiece('d', 7, new Pawn(Color.Preta, board, this));
-            PutNewPiece('e', 7, new Pawn(Color.Preta, board, this));
-            PutNewPiece('f', 7, new Pawn(Color.Preta, board, this));
-            PutNewPiece('g', 7, new Pawn(Color.Preta, board, this));
-            PutNewPiece('h', 7, new Pawn(Color.Preta, board, this));
+            PutNewPiece('a', 8, new Tower(PieceColor.Preta, board));
+            PutNewPiece('h', 8, new Tower(PieceColor.Preta, board));
+            PutNewPiece('e', 8, new King(PieceColor.Preta, board, this));
+            PutNewPiece('f', 8, new Bishop(PieceColor.Preta, board));
+            PutNewPiece('c', 8, new Bishop(PieceColor.Preta, board));
+            PutNewPiece('b', 8, new Horse(PieceColor.Preta, board));
+            PutNewPiece('g', 8, new Horse(PieceColor.Preta, board));
+            PutNewPiece('d', 8, new Queen(PieceColor.Preta, board));
+            PutNewPiece('a', 7, new Pawn(PieceColor.Branca, board, this));
+            PutNewPiece('b', 7, new Pawn(PieceColor.Preta, board, this));
+            PutNewPiece('c', 7, new Pawn(PieceColor.Preta, board, this));
+            PutNewPiece('d', 7, new Pawn(PieceColor.Preta, board, this));
+            PutNewPiece('e', 7, new Pawn(PieceColor.Preta, board, this));
+            PutNewPiece('f', 7, new Pawn(PieceColor.Preta, board, this));
+            PutNewPiece('g', 7, new Pawn(PieceColor.Preta, board, this));
+            PutNewPiece('h', 7, new Pawn(PieceColor.Preta, board, this));
         }
     }
 }

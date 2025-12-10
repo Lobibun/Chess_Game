@@ -9,7 +9,7 @@ namespace Chess_Console.Chess
 {
     internal class Tower : Piece
     {
-        public Tower(Color color, Board board) : base(color, board)
+        public Tower(PieceColor color, Board board) : base(color, board)
         {
         }
 

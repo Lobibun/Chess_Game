@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Chessboard
 {
-    enum Color
+    enum PieceColor
     {
         Branca,
         Preta,

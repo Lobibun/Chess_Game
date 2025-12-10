@@ -6,7 +6,7 @@ namespace Chess
     internal class King : Piece
     {
         private ChessMatch Match;
-        public King(Color color, Board board, ChessMatch match) : base(color, board)
+        public King(PieceColor color, Board board, ChessMatch match) : base(color, board)
         {
             Match = match;
         }

@@ -9,7 +9,7 @@ namespace Chess_Console.Chess
 {
     internal class Horse : Piece
     {
-        public Horse(Color color, Board board) : base(color, board)
+        public Horse(PieceColor color, Board board) : base(color, board)
         {
         }
 

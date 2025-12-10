@@ -28,11 +28,11 @@ namespace Chess
         {
             Console.WriteLine("Peças capturadas: ");
             Console.Write("Brancas: ");
-            PrintSets(match.CapturedPieces(Color.Branca));
+            PrintSets(match.CapturedPieces(PieceColor.Branca));
             Console.Write("\nPretas: ");
             ConsoleColor aux = Console.ForegroundColor;
             Console.ForegroundColor = ConsoleColor.Red;
-            PrintSets(match.CapturedPieces(Color.Preta));
+            PrintSets(match.CapturedPieces(PieceColor.Preta));
             Console.ForegroundColor = aux;
             Console.WriteLine();
         }
@@ -95,7 +95,7 @@ namespace Chess
 
         public static ChessPosition ReadChessPosition()
         {
-            string s = Console.ReadLine();
+            string s = Console.ReadLine().ToLower();
             char column = s[0];
            int line = int.Parse(s[1] + "");
             return new ChessPosition(column, line);
@@ -110,7 +110,7 @@ namespace Chess
             else
             {
 
-                if (piece.color == Color.Branca)
+                if (piece.color == PieceColor.Branca)
                 {
                     Console.Write(piece);
                 }
