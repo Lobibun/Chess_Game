@@ -342,7 +342,7 @@ namespace Chess
             PutNewPiece('b', 1, new Horse(Color.Branca, board));
             PutNewPiece('g', 1, new Horse(Color.Branca, board));
             PutNewPiece('d', 1, new Queen(Color.Branca, board));
-            PutNewPiece('a', 2, new Pawn(Color.Preta, board, this));
+            PutNewPiece('a', 2, new Pawn(Color.Branca, board, this));
             PutNewPiece('b', 2, new Pawn(Color.Branca, board, this));
             PutNewPiece('c', 2, new Pawn(Color.Branca, board, this));
             PutNewPiece('d', 2, new Pawn(Color.Branca, board, this));
@@ -359,7 +359,7 @@ namespace Chess
             PutNewPiece('b', 8, new Horse(Color.Preta, board));
             PutNewPiece('g', 8, new Horse(Color.Preta, board));
             PutNewPiece('d', 8, new Queen(Color.Preta, board));
-            PutNewPiece('a', 7, new Pawn(Color.Branca, board, this));
+            PutNewPiece('a', 7, new Pawn(Color.Preta, board, this));
             PutNewPiece('b', 7, new Pawn(Color.Preta, board, this));
             PutNewPiece('c', 7, new Pawn(Color.Preta, board, this));
             PutNewPiece('d', 7, new Pawn(Color.Preta, board, this));

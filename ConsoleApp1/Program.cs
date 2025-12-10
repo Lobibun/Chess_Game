@@ -15,7 +15,7 @@ class Program
                 try
                 {
                     Console.Clear();
-                   Screen.PrintMatch(match);
+                    Screen.PrintMatch(match);
 
 
                     Console.Write("\nOrigem: ");
@@ -35,6 +35,13 @@ class Program
                 catch (BoardException e)
                 {
                     Console.WriteLine(e.Message);
+                    Console.WriteLine("Pressione ENTER para tentar novamente...");
+                    Console.ReadLine();
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine("\nERRO DE ENTRADA: O formato da posição digitada é inválido ou ocorreu um erro inesperado.");
+                    Console.WriteLine("Pressione ENTER para tentar novamente...");
                     Console.ReadLine();
                 }
             }
