@@ -92,6 +92,23 @@ namespace Chess
                 UndoMove(origin, destiny, CapturedPiece);
                 throw new BoardException("Você não pode se colocar em xeque!");
             }
+
+            Piece p = board.piece(destiny);
+
+            //#jogada especial promoção
+
+            if (p is Pawn)
+            {
+                if ((p.color == Color.Branca && destiny.Line == 0) || (p.color == Color.Preta && destiny.Line == 7))
+                {
+                    p = board.RemovePiece(destiny);
+                    pieces.Remove(p);
+                    Piece queen = new Queen(p.color, board);
+                    board.PutPiece(queen, destiny);
+                    pieces.Add(queen);
+                }
+            }
+
             if (ByCheck(Adversary(CurrentPlayer)))
             {
                 Check = true;
@@ -110,7 +127,7 @@ namespace Chess
                 ChangePlayer();
             }
 
-            Piece p = board.piece(destiny);
+            
 
             //#jogada especial en passant
             if (p is Pawn && (destiny.Line == origin.Line - 2 || destiny.Line == origin.Line + 2))
@@ -325,7 +342,7 @@ namespace Chess
             PutNewPiece('b', 1, new Horse(Color.Branca, board));
             PutNewPiece('g', 1, new Horse(Color.Branca, board));
             PutNewPiece('d', 1, new Queen(Color.Branca, board));
-            PutNewPiece('a', 2, new Pawn(Color.Branca, board, this));
+            PutNewPiece('a', 2, new Pawn(Color.Preta, board, this));
             PutNewPiece('b', 2, new Pawn(Color.Branca, board, this));
             PutNewPiece('c', 2, new Pawn(Color.Branca, board, this));
             PutNewPiece('d', 2, new Pawn(Color.Branca, board, this));
@@ -342,7 +359,7 @@ namespace Chess
             PutNewPiece('b', 8, new Horse(Color.Preta, board));
             PutNewPiece('g', 8, new Horse(Color.Preta, board));
             PutNewPiece('d', 8, new Queen(Color.Preta, board));
-            PutNewPiece('a', 7, new Pawn(Color.Preta, board, this));
+            PutNewPiece('a', 7, new Pawn(Color.Branca, board, this));
             PutNewPiece('b', 7, new Pawn(Color.Preta, board, this));
             PutNewPiece('c', 7, new Pawn(Color.Preta, board, this));
             PutNewPiece('d', 7, new Pawn(Color.Preta, board, this));
